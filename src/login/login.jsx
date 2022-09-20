@@ -20,9 +20,10 @@ const StyledLogin = styled.div`
   .right {
     max-width: 350px;
   }
-  @media (max-width:992px) {
-    gap:16px;
-    .left,.right{
+  @media (max-width: 992px) {
+    gap: 16px;
+    .left,
+    .right {
       transform: scale(0.8);
     }
   }
@@ -49,7 +50,8 @@ const SignInForm = styled.div`
   }
   .form-username,
   .form-password {
-    width: 268px;
+    box-sizing: border-box;
+    width: 100%;
     height: 36px;
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -58,11 +60,25 @@ const SignInForm = styled.div`
     position: relative;
     margin-bottom: 5px;
     background: #fafafa;
+    position: relative;
     label {
       /* display:none; */
       padding: 2px 1px;
       font-size: 11px;
-      color: rgb(107, 108, 109);
+      color: transparent;
+      transition: 0.5s;
+    }
+    input{
+      transform:translateY(-10px);
+      transition: 0.5s;
+    }
+    &.active {
+      label {
+        color: rgb(107, 108, 109);
+      }
+      input{
+      transform:translateY(0px);
+    }
     }
   }
   .show-pass {
@@ -150,8 +166,8 @@ const DownloadApp = styled.div`
 `;
 const Footer = styled.div`
   margin-top: 90px;
-  @media (max-width:750px) {
-   margin-top:20px; 
+  @media (max-width: 750px) {
+    margin-top: 20px;
   }
 `;
 const MenuFooter = styled.div`
@@ -174,6 +190,13 @@ const CoppyRight = styled.div`
 `;
 const ChangeLanguage = styled.div``;
 
+const changeLabelInput = (e) => {
+  e.target.closest(".form-field").classList.remove('active')
+  if(e.target.value){
+    e.target.closest(".form-field").classList.add('active')
+  }
+};
+
 const login = () => {
   return (
     <div style={{ width: "100%", maxWidth: "1180px", margin: "0 auto" }}>
@@ -186,16 +209,17 @@ const login = () => {
             <a href="#" style={{ marginBottom: "37px" }}>
               <img src="/instagram.png" alt="INSTAGRAM" />
             </a>
-            <div className="form-username">
+            <div className="form-field form-username">
               <label htmlFor="">Số điện thoại, tên người dùng hoặc email</label>
               <input
                 type="text"
                 placeholder="Số điện thoại, tên người dùng hoặc email"
+                onChange={changeLabelInput}
               />
             </div>
-            <div className="form-password">
+            <div className="form-field form-password">
               <label htmlFor="">Mật khẩu</label>
-              <input type="password" placeholder="Mật khẩu" />
+              <input type="password" placeholder="Mật khẩu" onChange={changeLabelInput} />
               <button className="show-pass">Hiển thị</button>
             </div>
             <ButtonSignIn>Đăng nhập</ButtonSignIn>
