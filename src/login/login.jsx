@@ -68,17 +68,20 @@ const SignInForm = styled.div`
       color: transparent;
       transition: 0.5s;
     }
-    input{
-      transform:translateY(-10px);
+    input {
+      transform: translateY(-10px);
       transition: 0.5s;
     }
     &.active {
       label {
         color: rgb(107, 108, 109);
       }
-      input{
-      transform:translateY(0px);
+      input {
+        transform: translateY(0px);
+      }
     }
+    &:focus-within input {
+      border: 1px solid #55e91a;
     }
   }
   .show-pass {
@@ -191,9 +194,9 @@ const CoppyRight = styled.div`
 const ChangeLanguage = styled.div``;
 
 const changeLabelInput = (e) => {
-  e.target.closest(".form-field").classList.remove('active')
-  if(e.target.value){
-    e.target.closest(".form-field").classList.add('active')
+  e.target.closest(".form-field").classList.remove("active");
+  if (e.target.value) {
+    e.target.closest(".form-field").classList.add("active");
   }
 };
 
@@ -219,7 +222,11 @@ const login = () => {
             </div>
             <div className="form-field form-password">
               <label htmlFor="">Mật khẩu</label>
-              <input type="password" placeholder="Mật khẩu" onChange={changeLabelInput} />
+              <input
+                type="password"
+                placeholder="Mật khẩu"
+                onChange={changeLabelInput}
+              />
               <button className="show-pass">Hiển thị</button>
             </div>
             <ButtonSignIn>Đăng nhập</ButtonSignIn>
