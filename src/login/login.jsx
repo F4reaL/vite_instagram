@@ -135,7 +135,7 @@ const Or = styled.div`
     width: 30%;
     border-top: 1px solid #ccc;
   }
-`;
+`
 const SignInWithFB = styled.button`
   width: 100%;
   display: flex;

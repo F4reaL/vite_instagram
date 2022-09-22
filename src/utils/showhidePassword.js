@@ -1,5 +1,5 @@
 export default function showhidePassword() {
-    console.log('called')
+  console.log("called");
   var showPasses = document.querySelectorAll(".form-field .show-pass");
   Array.from(showPasses).forEach(function (icon) {
     var input = icon.parentElement.querySelector("input");
