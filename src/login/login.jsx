@@ -8,6 +8,8 @@ import imgPhone4 from '/img4.png'
 import '../css/animation.css'
 import '../utils/showhidePassword.js'
 import showhidePassword from "../utils/showhidePassword.js";
+import { useFormik } from "formik";
+import * as Yup from "yup"
 
 const StyledLogin = styled.div`
   margin: 0 auto;
@@ -38,7 +40,7 @@ const StyledLogin = styled.div`
     }
   }
 `;
-const SignInForm = styled.div`
+const SignInForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -252,17 +254,34 @@ const login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [imgPhoneIndex,setImgPhoneIndex] = useState(0)
 
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      setImgPhoneIndex(preState => {
-        return (preState +1)%4
-      })
-    }, 3000);
-  
-    return () => {
-      clearInterval(timerId)
+  const formik = useFormik({
+    initialValues:{
+      phoneOrEmail:"",
+      fullname:"",
+      username:"",
+      password:"",
+    },
+    validationSchema: Yup.object({
+      phoneOrEmail: Yup.string().required("Yêu cầu nhập").min(4,'Quá ngắn').email('Sai định dạng email')
+    }),
+    onSubmit:(values)=>{
+      console.log(values);
     }
-  }, [])
+  })
+  // console.log(formik.handleBlur)
+  console.log(formik.errors)
+
+  // useEffect(() => {
+  //   const timerId = setInterval(() => {
+  //     setImgPhoneIndex(preState => {
+  //       return (preState +1)%4
+  //     })
+  //   }, 3000);
+  
+  //   return () => {
+  //     clearInterval(timerId)
+  //   }
+  // }, [])
   
 
   return (
@@ -300,7 +319,7 @@ const login = () => {
                   />
                   <button className="show-pass" style={{transition:'all 0.5s ease'}} >Hiển thị</button>
                 </div>
-                <ButtonSignIn>Đăng nhập</ButtonSignIn>
+                <ButtonSignIn >Đăng nhập</ButtonSignIn>
                 <Or>
                   <span></span>
                   HOẶC
@@ -364,7 +383,7 @@ const login = () => {
         <div className="signup">
           <StyledLogin>
             <div className="right">
-              <SignInForm>
+              <SignInForm onSubmit={formik.handleSubmit}>
                 <a href="#">
                   <img
                     src="/instagram.png"
@@ -386,33 +405,58 @@ const login = () => {
                 <div className="form-field form-phonenumber">
                   <label htmlFor="">Số di động hoặc email</label>
                   <input
+                    id="phoneOrEmail"
+                    name="phoneOrEmail"
                     type="text"
                     placeholder="Số di động hoặc email"
-                    onChange={changeLabelInput}
+                    value={formik.values.phoneOrEmail}
+                    onChange={(e)=>{
+                      changeLabelInput(e)
+                      formik.handleChange(e)
+                    }}
                   />
+                  {formik.errors.phoneOrEmail && <p>{formik.errors.phoneOrEmail}</p>}
                 </div>
                 <div className="form-field form-fullname">
                   <label htmlFor="">Tên đầy đủ</label>
                   <input
+                    id="fullname"
+                    name="fullname"
                     type="text"
                     placeholder="Tên đầy đủ"
-                    onChange={changeLabelInput}
+                    value={formik.values.fullname}
+                    onChange={(e)=>{
+                      changeLabelInput(e)
+                      formik.handleChange(e)
+                    }}
                   />
                 </div>
                 <div className="form-field form-username">
                   <label htmlFor="">Tên người dùng</label>
                   <input
+                    id="username"
+                    name="username"
                     type="text"
                     placeholder="Tên người dùng"
-                    onChange={changeLabelInput}
+                    value={formik.values.username}
+                    onChange={(e)=>{
+                      changeLabelInput(e)
+                      formik.handleChange(e)
+                    }}
                   />
                 </div>
                 <div className="form-field form-password">
                   <label htmlFor="">Mật khẩu</label>
                   <input
+                    id="password"
+                    name="password"
                     type="password"
                     placeholder="Mật khẩu"
-                    onChange={changeLabelInput}
+                    value={formik.values.password}
+                    onChange={(e)=>{
+                      changeLabelInput(e)
+                      formik.handleChange(e)
+                    }}
                   />
                   <button className="show-pass">Hiển thị</button>
                 </div>

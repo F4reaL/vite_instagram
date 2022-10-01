@@ -17,7 +17,7 @@ const DropdownItem = styled.li`
   gap: 12px;
   &:hover {
     cursor: pointer;
-    background-color: #f1f1f1;
+    background-color: #f8f8f8e4;
   }
   svg {
     flex-shrink: 0;
@@ -28,8 +28,7 @@ const DropdownItem = styled.li`
     font-size: 14px;
   }
 `;
-const DropdownMenu = () => {
-  const [opened, setOpened] = useState(true);
+const DropdownMenu = ({opened}) => {
   return (
     <>
       {opened && (
