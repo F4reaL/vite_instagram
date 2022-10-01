@@ -262,7 +262,10 @@ const login = () => {
       password:"",
     },
     validationSchema: Yup.object({
-      phoneOrEmail: Yup.string().required("Yêu cầu nhập").min(4,'Quá ngắn').email('Sai định dạng email')
+      phoneOrEmail: Yup.string().required("Yêu cầu nhập").min(4,'Quá ngắn'),
+      fullname: Yup.string().required("Yêu cầu nhập").min(3,'Tên không được quá ngắn'),
+      username: Yup.string().required("Yêu cầu nhập").min(3,"Không được quá ngắn"),
+      password: Yup.string().required("Yêu cầu nhập").min(6,"Không được quá ngắn, tối thiểu 6 ký tự"),
     }),
     onSubmit:(values)=>{
       console.log(values);
