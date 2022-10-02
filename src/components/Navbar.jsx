@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import DropdownMenu from "./DropdownMenu";
 
@@ -9,6 +9,10 @@ const Nav = styled.div`
   justify-content: space-between;
   padding: 0 20%;
   align-items: center;
+  @media (max-width: 750px) {
+    height: 44px;
+    padding: 0 16px;
+  }
   .instagram {
     &-logo {
       width: 103px;
@@ -18,12 +22,22 @@ const Nav = styled.div`
 const Tools = styled.div`
   display: flex;
   gap: 23px;
+  svg:hover,
+  .user:hover {
+    cursor: pointer;
+  }
   .user {
     position: relative;
     &-avatar {
       width: 24px;
       height: 24px;
       border-radius: 50%;
+    }
+  }
+  @media (max-width: 750px) {
+    svg:not(.message),
+    .user {
+      display: none;
     }
   }
 `;
@@ -37,6 +51,9 @@ const SearchBar = styled.div`
   position: relative;
   background-color: #e9e7e7;
   border-radius: 8px;
+  @media (max-width: 750px) {
+    display: none;
+  }
   button {
     border: none;
     outline: none;
@@ -44,6 +61,7 @@ const SearchBar = styled.div`
     display: none;
     box-sizing: border-box;
     height: 14px;
+    cursor: pointer;
   }
   input {
     width: 100%;
@@ -65,17 +83,54 @@ const SearchBar = styled.div`
     padding-left: 0px;
   }
 `;
-
+const Camera = styled.div`
+  @media (min-width: 751px) {
+    display: none;
+  }
+`;
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
-  const clearInput = () => {
-    setSearchValue("");
-  };
+  const [opened, setOpened] = useState(false);
+
+  const inputRef = useRef();
+
+  useEffect(()=>{
+    // console.log(encodeURIComponent(searchValue))
+  },[searchValue])
   return (
     <Nav>
-      <div className="instagram">
-        <img src="/instagram.png" alt="" className="instagram-logo" />
-      </div>
+     
+      <Camera>
+        <svg
+          aria-label="Tin mới"
+          color="#262626"
+          fill="#262626"
+          height="24"
+          role="img"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <circle
+            cx="12"
+            cy="13.191"
+            fill="none"
+            r="4.539"
+            stroke="currentColor"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          ></circle>
+          <path
+            d="M18.592 21.374A3.408 3.408 0 0022 17.966V8.874a3.41 3.41 0 00-3.41-3.409h-.52a2.108 2.108 0 01-1.954-1.375 2.082 2.082 0 00-2.204-1.348h-3.824A2.082 2.082 0 007.884 4.09 2.108 2.108 0 015.93 5.465h-.52A3.41 3.41 0 002 8.875v9.091a3.408 3.408 0 003.408 3.408z"
+            fill="none"
+            stroke="currentColor"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          ></path>
+        </svg>
+      </Camera>
+
+      <img src="/instagram.png" alt="" className="instagram-logo" />
+
       <SearchBar>
         <img
           style={{ width: "16px", position: "absolute", left: "16px" }}
@@ -83,12 +138,21 @@ const Navbar = () => {
           alt="search-icon"
         />
         <input
+          ref={inputRef}
           type="text"
           placeholder="Tìm kiếm"
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+          }}
         />
-        <button className="reset" onClick={clearInput}>
+        <button
+          className="clear"
+          onClick={() => {
+            setSearchValue("");
+            inputRef.current.focus()
+          }}
+        >
           <svg
             style={{ opacity: "0.4" }}
             width="14"
@@ -103,7 +167,6 @@ const Navbar = () => {
       <Tools>
         <svg
           aria-label="Trang chủ"
-         
           color="#262626"
           fill="#262626"
           height="24"
@@ -115,7 +178,7 @@ const Navbar = () => {
         </svg>
         <svg
           aria-label="Messenger"
-         
+          className="message"
           color="#262626"
           fill="#262626"
           height="24"
@@ -137,7 +200,6 @@ const Navbar = () => {
         </svg>
         <svg
           aria-label="Bài viết mới"
-         
           color="#262626"
           fill="#262626"
           height="24"
@@ -178,7 +240,6 @@ const Navbar = () => {
         </svg>
         <svg
           aria-label="Tìm người"
-         
           color="#262626"
           fill="#262626"
           height="24"
@@ -211,7 +272,6 @@ const Navbar = () => {
         </svg>
         <svg
           aria-label="Nguồn cấp dữ liệu hoạt động"
-         
           color="#262626"
           fill="#262626"
           height="24"
@@ -222,8 +282,13 @@ const Navbar = () => {
           <path d="M16.792 3.904A4.989 4.989 0 0121.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 014.708-5.218 4.21 4.21 0 013.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 013.679-1.938m0-2a6.04 6.04 0 00-4.797 2.127 6.052 6.052 0 00-4.787-2.127A6.985 6.985 0 00.5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 003.518 3.018 2 2 0 002.174 0 45.263 45.263 0 003.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 00-6.708-7.218z"></path>
         </svg>
         <div className="user">
-          <img className="user-avatar" src="/avatar.jpg" alt="" />
-          <DropdownMenu></DropdownMenu>
+          <img
+            className="user-avatar"
+            src="/avatar.jpg"
+            alt=""
+            onClick={() => setOpened(!opened)}
+          />
+          <DropdownMenu opened={opened}></DropdownMenu>
         </div>
       </Tools>
     </Nav>
