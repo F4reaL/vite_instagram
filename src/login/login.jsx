@@ -466,7 +466,7 @@ const login = () => {
               <li>Khiêu vũ</li>
               <li>Ẩm thực</li>
               <li>Nhà & vườn</li>
-              <li>Âm nhạc</li>
+              <li>Âm nhạc</li> 
               <li>Nghệ thuật thị giác</li>
             </MenuFooter>
             <CoppyRight>
