@@ -5,6 +5,8 @@ import imgPhone1 from '/img1.png'
 import imgPhone2 from '/img2.png'
 import imgPhone3 from '/img3.png'
 import imgPhone4 from '/img4.png'
+import iconClose from '/close-circle.png'
+import iconTick from '/tick.png'
 import '../css/animation.css'
 import '../utils/showhidePassword.js'
 import showhidePassword from "../utils/showhidePassword.js";
@@ -81,10 +83,12 @@ const SignInForm = styled.form`
       font-size: 11px;
       color: transparent;
       transition: 0.5s;
+      width:100%;
     }
     input {
       transform: translateY(-10px);
       transition: 0.5s;
+      width:90%;
     }
     &.active {
       label {
@@ -97,12 +101,18 @@ const SignInForm = styled.form`
     &:focus-within {
       border: 1px solid #0c0c0c;
     }
+    .icon{
+      position:absolute;
+      width:24px;
+      right:4px;
+      top:4px;
+    }
   }
   .show-pass {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    right: 10px;
+    right: 30px;
     background: transparent;
     font-size: 14px;
     font-weight: 600;
@@ -418,7 +428,7 @@ const login = () => {
                       formik.handleChange(e)
                     }}
                   />
-                  {formik.errors.phoneOrEmail && <p>{formik.errors.phoneOrEmail}</p>}
+                  {formik.errors.phoneOrEmail ? <img src={iconClose} className="icon"/>:<img src={iconTick} className="icon"/>}
                 </div>
                 <div className="form-field form-fullname">
                   <label htmlFor="">Tên đầy đủ</label>
@@ -433,6 +443,8 @@ const login = () => {
                       formik.handleChange(e)
                     }}
                   />
+                  {formik.errors.fullname ? <img src={iconClose} className="icon"/>:<img src={iconTick} className="icon"/>}
+
                 </div>
                 <div className="form-field form-username">
                   <label htmlFor="">Tên người dùng</label>
@@ -447,6 +459,8 @@ const login = () => {
                       formik.handleChange(e)
                     }}
                   />
+                  {formik.errors.username ? <img src={iconClose} className="icon"/>:<img src={iconTick} className="icon"/>}
+
                 </div>
                 <div className="form-field form-password">
                   <label htmlFor="">Mật khẩu</label>
@@ -461,6 +475,8 @@ const login = () => {
                       formik.handleChange(e)
                     }}
                   />
+                  {formik.errors.password ? <img src={iconClose} className="icon"/>:<img src={iconTick} className="icon"/>}
+
                   <button className="show-pass">Hiển thị</button>
                 </div>
                 <NoticeText>
