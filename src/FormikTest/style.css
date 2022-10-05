@@ -1,0 +1,22 @@
+h1{
+    text-align: center;
+}
+.form-signin{
+    width: 300px;
+    margin: 10px auto;
+}
+.form-field label, .form-field input{
+    width: 100%;
+}
+.form-field input{
+    margin: 10px 0 20px;
+    line-height: 24px;
+    font-size: 18px;
+    padding: 2px 4px;
+    outline: none;
+    border: 1px solid black;
+}
+
+.form-field input.error{
+    border: 1px solid red;
+}

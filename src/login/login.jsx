@@ -1,18 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import imgPhone1 from '/img1.png'
-import imgPhone2 from '/img2.png'
-import imgPhone3 from '/img3.png'
-import imgPhone4 from '/img4.png'
-import iconClose from '/close-circle.png'
-import iconTick from '/tick.png'
-import '../css/animation.css'
-import '../utils/showhidePassword.js'
+import imgPhone1 from "/img1.png";
+import imgPhone2 from "/img2.png";
+import imgPhone3 from "/img3.png";
+import imgPhone4 from "/img4.png";
+import iconClose from "/close-circle.png";
+import iconTick from "/tick.png";
+import "../css/animation.css";
+import "../utils/showhidePassword.js";
 import showhidePassword from "../utils/showhidePassword.js";
 import { useFormik } from "formik";
-import * as Yup from "yup"
-
+import { yupValidate } from "../schemas";
 const StyledLogin = styled.div`
   margin: 0 auto;
   padding: 6vh 86px;
@@ -83,29 +82,31 @@ const SignInForm = styled.form`
       font-size: 11px;
       color: transparent;
       transition: 0.5s;
-      width:100%;
+      width: 100%;
     }
     input {
       transform: translateY(-10px);
       transition: 0.5s;
-      width:90%;
+      width: 90%;
     }
     &.active {
       label {
         color: rgb(107, 108, 109);
+        position:absolute;
       }
       input {
-        transform: translateY(0px);
+        transform: translateY(6px);
+        height:90%;
       }
     }
     &:focus-within {
       border: 1px solid #0c0c0c;
     }
-    .icon{
-      position:absolute;
-      width:24px;
-      right:4px;
-      top:4px;
+    .icon {
+      position: absolute;
+      width: 24px;
+      right: 4px;
+      top: 4px;
     }
   }
   .show-pass {
@@ -118,7 +119,7 @@ const SignInForm = styled.form`
     font-weight: 600;
     color: rgb(83, 81, 81);
     display: none;
-    &.show{
+    &.show {
       display: inline-block;
     }
   }
@@ -147,7 +148,7 @@ const Or = styled.div`
     width: 30%;
     border-top: 1px solid #ccc;
   }
-`
+`;
 const SignInWithFB = styled.button`
   width: 100%;
   display: flex;
@@ -175,8 +176,8 @@ const ToSignUp = styled.div`
   border: 1px solid #ccc;
   background-color: #fff;
   margin-top: 10px;
-  @media (max-width:750px) {
-   border:none; 
+  @media (max-width: 750px) {
+    border: none;
   }
   a {
     text-decoration: none;
@@ -246,43 +247,37 @@ const NoticeText = styled.p`
   }
 `;
 const changeLabelInput = (e) => {
-  var button_showpass = e.target.closest(".form-field").querySelector(".show-pass");
+  var button_showpass = e.target
+    .closest(".form-field")
+    .querySelector(".show-pass");
   e.target.closest(".form-field").classList.remove("active");
   if (e.target.value) e.target.closest(".form-field").classList.add("active");
-  if(button_showpass) button_showpass.classList.remove('show')
-  if(e.target.value && button_showpass) {
-    button_showpass.classList.add('show')
-    showhidePassword()
+  if (button_showpass) button_showpass.classList.remove("show");
+  if (e.target.value && button_showpass) {
+    button_showpass.classList.add("show");
+    showhidePassword();
   }
 };
-const imgPhones = [imgPhone1,imgPhone2,imgPhone3,imgPhone4]
-// const showPassword = (e)=>{
-//   e.target.closest(".form-field").querySelector("input").setAttribute('type','text');
-// }
+const imgPhones = [imgPhone1, imgPhone2, imgPhone3, imgPhone4];
+
 
 const login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
-  const [imgPhoneIndex,setImgPhoneIndex] = useState(0)
+  const [imgPhoneIndex, setImgPhoneIndex] = useState(0);
 
   const formik = useFormik({
-    initialValues:{
-      phoneOrEmail:"",
-      fullname:"",
-      username:"",
-      password:"",
+    initialValues: {
+      phoneOrEmail: "",
+      fullname: "",
+      username: "",
+      password: "",
     },
-    validationSchema: Yup.object({
-      phoneOrEmail: Yup.string().required("Yêu cầu nhập").min(4,'Quá ngắn'),
-      fullname: Yup.string().required("Yêu cầu nhập").min(3,'Tên không được quá ngắn'),
-      username: Yup.string().required("Yêu cầu nhập").min(3,"Không được quá ngắn"),
-      password: Yup.string().required("Yêu cầu nhập").min(6,"Không được quá ngắn, tối thiểu 6 ký tự"),
-    }),
-    onSubmit:(values)=>{
+    validationSchema: yupValidate,
+    onSubmit: (values) => {
       console.log(values);
-    }
-  })
-  // console.log(formik.handleBlur)
-  console.log(formik.errors)
+    },
+  });
+ 
 
   // useEffect(() => {
   //   const timerId = setInterval(() => {
@@ -290,12 +285,11 @@ const login = () => {
   //       return (preState +1)%4
   //     })
   //   }, 3000);
-  
+
   //   return () => {
   //     clearInterval(timerId)
   //   }
   // }, [])
-  
 
   return (
     <>
@@ -306,7 +300,11 @@ const login = () => {
         >
           <StyledLogin>
             <div className="left">
-              <img src={imgPhones[imgPhoneIndex]} style={{animation:'appearImg 3s infinite'}} alt="" />
+              <img
+                src={imgPhones[imgPhoneIndex]}
+                style={{ animation: "appearImg 3s infinite" }}
+                alt=""
+              />
             </div>
             <div className="right">
               <SignInForm>
@@ -330,9 +328,14 @@ const login = () => {
                     placeholder="Mật khẩu"
                     onChange={changeLabelInput}
                   />
-                  <button className="show-pass" style={{transition:'all 0.5s ease'}} >Hiển thị</button>
+                  <button
+                    className="show-pass"
+                    style={{ transition: "all 0.5s ease" }}
+                  >
+                    Hiển thị
+                  </button>
                 </div>
-                <ButtonSignIn >Đăng nhập</ButtonSignIn>
+                <ButtonSignIn>Đăng nhập</ButtonSignIn>
                 <Or>
                   <span></span>
                   HOẶC
@@ -423,12 +426,15 @@ const login = () => {
                     type="text"
                     placeholder="Số di động hoặc email"
                     value={formik.values.phoneOrEmail}
-                    onChange={(e)=>{
-                      changeLabelInput(e)
-                      formik.handleChange(e)
+                    onChange={(e) => {
+                      changeLabelInput(e);
+                      formik.handleChange(e);
                     }}
+                    onBlur={formik.handleBlur}
                   />
-                  {formik.errors.phoneOrEmail ? <img src={iconClose} className="icon"/>:<img src={iconTick} className="icon"/>}
+                  {formik.errors.phoneOrEmail && formik.touched.phoneOrEmail ? (
+                    <img src={iconClose} className="icon" />
+                  ) : null}
                 </div>
                 <div className="form-field form-fullname">
                   <label htmlFor="">Tên đầy đủ</label>
@@ -438,13 +444,16 @@ const login = () => {
                     type="text"
                     placeholder="Tên đầy đủ"
                     value={formik.values.fullname}
-                    onChange={(e)=>{
-                      changeLabelInput(e)
-                      formik.handleChange(e)
+                    onChange={(e) => {
+                      changeLabelInput(e);
+                      formik.handleChange(e);
                     }}
                   />
-                  {formik.errors.fullname ? <img src={iconClose} className="icon"/>:<img src={iconTick} className="icon"/>}
-
+                  {formik.errors.fullname ? (
+                    <img src={iconClose} className="icon" />
+                  ) : (
+                    null
+                  )}
                 </div>
                 <div className="form-field form-username">
                   <label htmlFor="">Tên người dùng</label>
@@ -454,13 +463,16 @@ const login = () => {
                     type="text"
                     placeholder="Tên người dùng"
                     value={formik.values.username}
-                    onChange={(e)=>{
-                      changeLabelInput(e)
-                      formik.handleChange(e)
+                    onChange={(e) => {
+                      changeLabelInput(e);
+                      formik.handleChange(e);
                     }}
                   />
-                  {formik.errors.username ? <img src={iconClose} className="icon"/>:<img src={iconTick} className="icon"/>}
-
+                  {formik.errors.username ? (
+                    <img src={iconClose} className="icon" />
+                  ) : (
+                    null
+                  )}
                 </div>
                 <div className="form-field form-password">
                   <label htmlFor="">Mật khẩu</label>
@@ -470,12 +482,16 @@ const login = () => {
                     type="password"
                     placeholder="Mật khẩu"
                     value={formik.values.password}
-                    onChange={(e)=>{
-                      changeLabelInput(e)
-                      formik.handleChange(e)
+                    onChange={(e) => {
+                      changeLabelInput(e);
+                      formik.handleChange(e);
                     }}
                   />
-                  {formik.errors.password ? <img src={iconClose} className="icon"/>:<img src={iconTick} className="icon"/>}
+                  {formik.errors.password ? (
+                    <img src={iconClose} className="icon" />
+                  ) : (
+                    null
+                  )}
 
                   <button className="show-pass">Hiển thị</button>
                 </div>
@@ -529,7 +545,7 @@ const login = () => {
               <li>Khiêu vũ</li>
               <li>Ẩm thực</li>
               <li>Nhà & vườn</li>
-              <li>Âm nhạc</li> 
+              <li>Âm nhạc</li>
               <li>Nghệ thuật thị giác</li>
             </MenuFooter>
             <CoppyRight>
